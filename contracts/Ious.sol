@@ -15,6 +15,8 @@ contract IOUS {
     uint256 public degovExchangeRate;
     uint256 public duration;
 
+    mapping(address => uint256) public debaseDeposited;
+    mapping(address => uint256) public degovDeposited;
     mapping(address => uint256) public iouBalance;
 
     constructor(
@@ -38,11 +40,15 @@ contract IOUS {
     }
 
     function depositDebase(uint256 amount) public inDuration {
+        debaseDeposited[msg.sender] += amount;
+
         uint256 iouAmount = (amount * debaseExchangeRate) / 1 ether;
         iouBalance[msg.sender] += iouAmount;
     }
 
     function depositDegov(uint256 amount) public inDuration {
+        degovDeposited[msg.sender] += amount;
+
         uint256 iouAmount = (amount * degovExchangeRate) / 1 ether;
         iouBalance[msg.sender] += iouAmount;
     }
